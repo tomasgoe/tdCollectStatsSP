@@ -76,7 +76,7 @@ EXECUTE_PROC: BEGIN
   	SET out_sql_code=SqlCode;
   	SET out_sql_state=SqlState;
   	--SET OutReturnCode = SqlCode;
-  	SET out_return_message = SqlState;
+  	SET out_return_message = 'Failed!';
   END;
 
   STATS_RUN: BEGIN
@@ -85,6 +85,7 @@ EXECUTE_PROC: BEGIN
     IF UPPER(input_columns) IN ('DROP ALL')  THEN
         BEGIN
         SET lv_sql_request_txt = 'DROP STATISTICS ';
+        SET out_return_message = 'Drop all statistics.';
         LEAVE STATS_RUN;
         END;
     END IF;
@@ -93,6 +94,7 @@ EXECUTE_PROC: BEGIN
     IF UPPER(input_columns) IN ('RECOLLECT ALL', 'RECOLLECT GTT')  THEN
         BEGIN
         SET lv_sql_request_txt = 'COLLECT STATISTICS ';
+        SET out_return_message = 'Recollect all statistics.';
         LEAVE STATS_RUN;
         END;
     END IF;
@@ -103,6 +105,7 @@ EXECUTE_PROC: BEGIN
         IF input_delete_fg IN ('y', 'Y')  THEN
             BEGIN
             SET lv_sql_request_txt = 'DROP STATISTICS ';
+            SET out_return_message = 'Drop statistics.';
             LEAVE STATS_PROPERTIES;
             END;
         END IF;
@@ -172,6 +175,7 @@ EXECUTE_PROC: BEGIN
             
         SET out_sql_code = SqlCode;
 		SET out_sql_state = SqlState;
+        SET out_return_message = 'Completed.';
 
 
 END EXECUTE_PROC;
